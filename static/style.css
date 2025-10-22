@@ -1,0 +1,47 @@
+/* static/style.css */
+
+body {
+    background-color: #0A0A0A; /* Very dark background */
+    color: #E0E0E0;           /* Light grey text */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #FFFFFF; /* Pure white for headings */
+    font-weight: 600;
+}
+
+/* Style the navbar */
+.navbar-dark {
+    background-color: #101010 !important; /* Slightly lighter dark for navbar */
+    border-bottom: 1px solid #222;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #FFFFFF !important;
+}
+
+/* Style the Bootstrap table */
+.table-dark {
+    --bs-table-bg: #1A1A1A; /* Darker table background */
+    --bs-table-border-color: #333;
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Ensures border-radius clips the table */
+}
+
+.table-dark thead th {
+    color: #E0E0E0;
+    background-color: #252525;
+    border-bottom: 2px solid #444;
+}
+
+.table-dark.table-hover tbody tr:hover {
+    --bs-table-hover-bg: #2C2C2C; /* Hover effect */
+    --bs-table-hover-color: #FFFFFF;
+}
+
+/* Main content container */
+.container {
+    margin-top: 2rem;
+}
