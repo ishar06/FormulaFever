@@ -1,2 +1,3 @@
-# FormulaFever
-F1 Predictor Version testing before GDG event 
+# 🏎️ FormulaFever
+
+An F1 analytics dashboard built with Flask, Pandas, and FastF1.
