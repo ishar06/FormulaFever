@@ -461,7 +461,8 @@
             <div class="cta-row">
                 <a href="#what" class="btn btn-primary-ff"><i class="fas fa-arrow-down me-2"></i>Learn What & Why</a>
                 <a href="#features" class="btn btn-outline-ff"><i class="fas fa-sitemap me-2"></i>See Features</a>
-                <a href="#live" class="btn btn-outline-ff"><i class="fas fa-chart-line me-2"></i>Live Demo</a>
+                <a href="{{ url_for('live_stats') }}" class="btn btn-outline-ff"><i class="fas fa-chart-line me-2"></i>Live Demo</a>
+                
             </div>
         </div>
 
@@ -512,8 +513,8 @@
                                 </div>
                             </div>
                             <div class="carousel-item">
-                                <img src="https://images.unsplash.com/photo-1614289373758-5c956d1e9f1b?auto=format&fit=crop&w=1600&q=80"
-                                    class="d-block w-100" alt="dashboard" style="height: 300px; object-fit: cover;">
+                                <img src="../static/images/dashboard.jpeg" class="d-block w-100" alt="dashboard"
+                                    style="height: 300px; object-fit: cover;">
                                 <div class="carousel-caption d-none d-md-block">
                                     <small>Telemetry & data visualization</small>
                                 </div>
@@ -683,9 +684,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 order-lg-1">
-                                <img src="https://images.unsplash.com/photo-1582719478250-5f5d7d6c35c8?auto=format&fit=crop&w=1200&q=80"
-                                    class="img-fluid rounded-4 shadow-sm" alt="chatbot"
-                                    style="height: 300px; object-fit: cover;">
+                                <img src="../static/images/chatbot.jpeg" class="img-fluid rounded-4 shadow-sm"
+                                    alt="chatbot" style="height: 300px; object-fit: cover;">
                             </div>
                         </div>
                     </div>
@@ -728,18 +728,156 @@
         </div>
     </section>
 
-    <section id="roadmap" class="section">
+    <section id="roadmap" class="section" style="background-color:#0d0d0d; color:#fff;">
         <div class="container">
-            <h2 class="title text-center">⏱️ Roadmap — Development Path</h2>
-            <p class="lead-muted text-center">A concise presenter-friendly roadmap: phases we implemented and the
-                technical approach used in each phase.</p>
+            <h2 class="title text-center text-danger fw-bold mb-4">⏱️ Roadmap — Development Path</h2>
+            <p class="lead text-center text-light mb-5">
+                The journey of FormulaFever — from raw data to intelligent insights.
+                Each phase refined our vision to combine racing passion with data-driven technology.
+            </p>
 
-            <div class="timeline mt-4">
+            <div class="timeline position-relative">
                 <div class="timeline-line"></div>
 
+                <!-- Phase 1 -->
+                <div class="timeline-item left">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">🏁 Phase 1 — Past Analysis</h4>
+                        <p class="text-light">
+                            We started with analyzing <b>historical F1 race data</b> — focusing on parameters like lap
+                            times,
+                            track conditions, driver performance, and tire usage.
+                            The analyzed data is visualized through <b>interactive graphs</b> displayed directly on our
+                            website.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="timeline-item right">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">⚙️ Phase 2 — Future Predictions</h4>
+                        <p class="text-light">
+                            Leveraging machine learning and the <b>Gemini API</b>, FormulaFever predicts future race
+                            outcomes —
+                            including driver performance, winning probability, and lap timings — using real-world race
+                            data.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="timeline-item left">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">🏎️ Phase 3 — Driver Comparison & Improvement</h4>
+                        <p class="text-light">
+                            We added a <b>comparative dashboard</b> that allows users to evaluate two drivers
+                            side-by-side,
+                            tracking their progress and improvement trends across multiple seasons.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="timeline-item right">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">🤖 Phase 4 — AI Chatbot Integration</h4>
+                        <p class="text-light">
+                            To make FormulaFever interactive, we built a <b>smart AI chatbot</b> that responds to
+                            queries about
+                            race predictions, stats, and analysis — offering insights instantly through natural
+                            conversation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phase 5 -->
+                <div class="timeline-item left">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">📈 Phase 5 — Live Race Stats</h4>
+                        <p class="text-light">
+                            We're adding a <b>real-time race tracking system</b> using FastF1, bringing dynamic race
+                            data updates
+                            — including positions, speed, and tire strategy — right onto the FormulaFever dashboard.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <style>
+            .timeline {
+                position: relative;
+                margin-top: 60px;
+                padding: 20px 0;
+            }
+
+            .timeline-line {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 4px;
+                height: 100%;
+                background-color: #ff1e1e;
+                border-radius: 2px;
+            }
+
+            .timeline-item {
+                position: relative;
+                width: 50%;
+                padding: 20px 40px;
+            }
+
+            .timeline-item.left {
+                left: 0;
+            }
+
+            .timeline-item.right {
+                left: 50%;
+            }
+
+            .timeline-item::after {
+                content: '';
+                position: absolute;
+                top: 25px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #ff1e1e;
+                box-shadow: 0 0 15px #ff1e1e;
+            }
+
+            .timeline-item.left::after {
+                right: -10px;
+            }
+
+            .timeline-item.right::after {
+                left: -10px;
+            }
+
+            @media (max-width: 768px) {
+                .timeline::before {
+                    left: 8px;
+                }
+
+                .timeline-item {
+                    width: 100%;
+                    padding-left: 40px;
+                    margin-bottom: 40px;
+                }
+
+                .timeline-item.right {
+                    left: 0;
+                }
+
+                .timeline-item::after {
+                    left: 0;
+                }
+            }
+        </style>
     </section>
+
 
     <section id="why-different" class="section section-dark">
         <div class="container">
