@@ -1,15 +1,29 @@
-# app.py
+import os
+from groq import Groq
 from flask import Flask, render_template, request, redirect, url_for, flash
 import requests
 from analysis import create_laptime_chart, create_comparison_plots
 import fastf1 as ff1  
-from ml_predictor import train_models, generate_prediction_summary
 from analysis import create_laptime_chart, create_driver_improvement_chart
 import datetime
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'a_very_secret_key_change_this'
+
+# --- START: NEW Groq Configuration ---
+api_key = os.environ.get("GROQ_API_KEY")
+if not api_key:
+    raise ValueError("CRITICAL: GROQ_API_KEY environment variable not set. "
+                     "Please set the key and restart the app.")
+try:
+    client = Groq(api_key=api_key) # Initialize the Groq client
+    print("✅ Groq AI Client initialized successfully.")
+except Exception as e:
+    print(f"CRITICAL: Could not initialize Groq AI Client. Error: {e}")
+    raise e
+# --- END: NEW Groq Configuration ---
+
 
 try:
     ff1.Cache.enable_cache('ff1_cache/')
@@ -115,23 +129,9 @@ def race_dashboard(year, race_name):
                            summary=summary)
 
 
-# -------------
-# ML
-# -------------
 
-@app.route('/predict_summary', methods=['GET', 'POST'])
-def predict_summary():
-    if request.method == 'POST':
-        driver = request.form['driver']
-        tyre = request.form['tyre']
-        lap = int(request.form['lap'])
-        air_temp = float(request.form['air_temp'])
-        track_temp = float(request.form['track_temp'])
 
-        result = generate_prediction_summary(driver, tyre, lap, air_temp, track_temp)
-        return render_template('predict_summary.html', result=result)
 
-    return render_template('predict_summary.html', result=None)
 
 
 
@@ -248,6 +248,101 @@ def live_stats():
         # Handle case when data is not available
         error_msg = f"Live data currently unavailable. Please try again later. ({str(e)})"
         return render_template('live.html', error=error_msg)
+    
+
+# -----------
+# ML
+# -----------
+@app.route('/predictor')
+def predictor():
+    """Renders the prediction input form."""
+    return render_template('predictor.html')
+
+
+
+# In app.py
+
+@app.route('/run_prediction', methods=['POST'])
+def run_prediction():
+    """Handles the form, calls Groq, and shows the result."""
+    
+    try:
+        # 1. Get all the data from the form (unchanged)
+        driver = request.form['driver']
+        start_pos = request.form['starting_position']
+        track_name = request.form['track_name']
+        conditions = request.form['conditions']
+        laps = request.form['laps']
+        tyre = request.form['tyre']
+
+        # 2. Craft the prompt for Groq (unchanged)
+        system_prompt = "You are an expert Formula 1 analyst for the 'FormulaFever' project."
+        
+        user_prompt = f"""
+        You are an expert Formula 1 analyst for the 'FormulaFever' project. 
+        A user is asking for a prediction for an upcoming race.
+
+        Based *only* on the data provided, provide a concise summary and an estimated win probability.
+        
+        **Input Data:**
+        - **Driver:** {driver}
+        - **Starting Position:** {start_pos}
+        - **Track Name:** {track_name}
+        - **Conditions:** {conditions}
+        - **Number of Laps:** {laps}
+        - **Starting Tyre:** {tyre}
+
+        Please analyze these factors (e.g., how starting position matters at this track,
+        tyre strategy, driver's strength in these conditions) and provide your
+        analysis in the following exact format:
+        
+        **AI Summary:** [Your 2-3 sentence expert summary here.]
+        **Win Probability:** [Your estimated probability, e.g., "~15%"]
+        """
+
+        # 3. Call the Groq API (Using the new, correct model)
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": system_prompt
+                },
+                {
+                    "role": "user",
+                    "content": user_prompt
+                }
+            ],
+            model="llama-3.1-8b-instant", # The new, active model
+        )
+        raw_text = chat_completion.choices[0].message.content
+
+        # 4. Parse the response (This part is already fixed)
+        summary = "Could not parse AI summary. (Model output: " + raw_text + ")" 
+        probability = "Could not parse AI probability."
+
+        if "**AI Summary:**" in raw_text and "**Win Probability:**" in raw_text: 
+            summary_split = raw_text.split("**AI Summary:**")[1]
+            summary = summary_split.split("**Win Probability:**")[0].strip()
+            probability = raw_text.split("**Win Probability:**")[1].strip()
+        else:
+            print(f"DEBUG: Parsing failed. Raw text was: {raw_text}")
+
+
+        # 5. Render the new results page (THIS IS THE UPDATED PART)
+        # We are now passing all the original inputs to the template
+        return render_template('prediction_result.html',
+                               summary=summary,
+                               probability=probability,
+                               driver=driver,
+                               track=track_name,
+                               start_pos=start_pos,
+                               conditions=conditions,
+                               laps=laps,
+                               tyre=tyre)
+
+    except Exception as e:
+        flash(f"An error occurred while generating the AI prediction: {e}", "danger")
+        return redirect(url_for('predictor'))
 
 @app.route('/about')
 def about():

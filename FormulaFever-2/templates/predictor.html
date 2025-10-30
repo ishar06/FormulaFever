@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block title %}AI Predictor - FormulaFever{% endblock %}
+
+{% block content %}
+<section id="predictor-form" class="mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="text-center mb-4">FormulaFever AI Race Predictor</h2>
+
+            <div class="card">
+                <div class="card-body p-4">
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{ category }} mb-3" role="alert">
+                            {{ message }}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+
+                    <form action="{{ url_for('run_prediction') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="driver" class="form-label text-secondary">Driver (e.g., VER, HAM, NOR):</label>
+                            <input type="text" class="form-control" id="driver" name="driver" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="starting_position" class="form-label text-secondary">Starting Position (1-20):</label>
+                            <input type="number" class="form-control" id="starting_position" name="starting_position" min="1" max="20" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="track_name" class="form-label text-secondary">Track Name (e.g., Monza, Spa):</label>
+                            <input type="text" class="form-control" id="track_name" name="track_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="conditions" class="form-label text-secondary">Conditions:</label>
+                            <select class="form-select" id="conditions" name="conditions">
+                                <option value="Dry">Dry</option>
+                                <option value="Wet">Wet</option>
+                                <option value="Mixed">Mixed (Damp/Drying)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="laps" class="form-label text-secondary">Number of Laps:</label>
+                            <input type="number" class="form-control" id="laps" name="laps" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tyre" class="form-label text-secondary">Starting Tyre:</label>
+                            <select class="form-select" id="tyre" name="tyre">
+                                <option value="Soft">Soft</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Get AI Prediction</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
