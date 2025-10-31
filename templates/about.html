@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FormulaFever — The Story, The Tech, The Future</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            /* Softer dark theme base colors for better contrast and less eye strain */
+            --bg: #0d0d10;
+            /* Soft charcoal black */
+            --card: #1a1a20;
+            /* Slightly lighter card background */
+            --accent: #ff2a2a;
+            /* Vibrant Red */
+            --secondary-accent: #00b8ff;
+            /* New Blue accent for data/charts (e.g., Driver B) */
+            --muted: #b8b8c0;
+            /* Softer light gray for secondary text */
+            --border-color: rgba(255, 255, 255, 0.08);
+            /* Unified border color */
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            /* Use a subtle gradient for depth */
+            background: linear-gradient(180deg, var(--bg) 0%, #170d18 80%);
+            color: #fff;
+            font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HERO - Added a subtle inner glow effect on the title for a futuristic look */
+        .hero {
+            height: 80vh;
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://images.unsplash.com/photo-1503437313881-503a91226423?auto=format&fit=crop&w=1800&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.8));
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 30px;
+            max-width: 1100px;
+        }
+
+        .brand-title {
+            font-size: 4rem;
+            /* Slightly larger for impact */
+            color: var(--accent);
+            font-weight: 900;
+            letter-spacing: 2px;
+            /* Enhanced shadow/glow effect */
+            text-shadow: 0 0 10px rgba(255, 42, 42, 0.5), 0 0 20px rgba(255, 42, 42, 0.2);
+            margin-bottom: 12px;
+            transform: translateY(0);
+            animation: titleFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes titleFloat {
+            0% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+
+            100% {
+                transform: translateY(0)
+            }
+        }
+
+        /* Deeper float */
+
+        .hero-sub {
+            color: var(--muted);
+            font-size: 1.1rem;
+            margin-bottom: 18px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-row {
+            margin-top: 30px;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Larger margin and gap */
+
+        .btn-primary-ff {
+            background: var(--accent);
+            border: 0;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all .3s ease;
+            box-shadow: 0 8px 24px rgba(255, 42, 42, 0.2);
+        }
+
+        .btn-primary-ff:hover {
+            background: #ff5c5c;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 42, 42, 0.3);
+        }
+
+        .btn-outline-ff {
+            border: 1px solid var(--border-color);
+            color: #fff;
+            background: transparent;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all .3s ease;
+        }
+
+        .btn-outline-ff:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* SECTION TITLES */
+        .section {
+            padding: 80px 6%;
+        }
+
+        /* Slightly more padding */
+        .section .title {
+            margin-bottom: 20px;
+            font-size: 2.4rem;
+            color: var(--accent);
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 0 14px rgba(255, 42, 42, 0.1);
+        }
+
+        .lead-muted {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 1000px;
+            margin: 0 auto 30px;
+        }
+
+        /* CARDS / GRID - Enhanced depth and subtle border */
+        .ff-card {
+            background: var(--card);
+            /* Solid color for card */
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            /* Slightly more rounded */
+            padding: 25px;
+            transition: all .4s cubic-bezier(.25, .8, .25, 1);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+            /* Softer shadow */
+        }
+
+        .ff-card:hover {
+            transform: translateY(-5px);
+            /* Subtler lift */
+            border-color: rgba(255, 42, 42, 0.3);
+            /* Accent hover border */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 42, 42, 0.1);
+        }
+
+        .icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            /* Changed to circle */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(255, 42, 42, 0.2), rgba(255, 42, 42, 0.1));
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(255, 42, 42, 0.1), inset 0 0 8px rgba(255, 42, 42, 0.1);
+            /* Subtle inner glow */
+        }
+
+        /* COMPARISON TABLE - Cleaned up to use subtle borders/fills */
+        .cmp-table td,
+        .cmp-table th {
+            vertical-align: middle;
+            color: var(--muted);
+            border-color: rgba(255, 255, 255, 0.05);
+            /* Lighter border for table */
+            padding: 12px;
+        }
+
+        .cmp-table thead th {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .cmp-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Row hover */
+        .cmp-table .text-success {
+            color: #50e991 !important;
+        }
+
+        /* Custom success color for contrast */
+        .cmp-table .text-danger {
+            color: #ff6b6b !important;
+        }
+
+        /* Custom danger color for contrast */
+
+        /* ROADMAP TIMELINE */
+        .timeline {
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, var(--accent), var(--secondary-accent));
+            border-radius: 8px;
+        }
+
+        .timeline-item {
+            width: 50%;
+            padding: 20px 30px;
+            position: relative;
+        }
+
+        .timeline-item.left {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item.right {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-bubble {
+            display: inline-block;
+            padding: 20px;
+            border-radius: 14px;
+            background: var(--card);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+        }
+
+        .timeline-bubble h5 {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .timeline-point {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            border: 3px solid var(--bg);
+            /* Ring effect */
+            border-radius: 50%;
+            top: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(255, 42, 42, 0.5);
+            /* Glow */
+        }
+
+        .left .timeline-point {
+            right: -9px;
+        }
+
+        .right .timeline-point {
+            left: -9px;
+        }
+
+        /* carousel images and overlay captions */
+        .carousel .carousel-caption {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9));
+            border-radius: 12px;
+            padding: 16px;
+            bottom: 12%;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* GRAPH */
+        .graph-wrap {
+            background: var(--card);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--border-color);
+        }
+
+        /* FUTURE SCOPE */
+        .future-list li {
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        /* small screens */
+        @media(max-width:991px) {
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                text-align: left !important;
+                padding-left: 70px;
+                padding-right: 30px;
+                margin-bottom: 30px;
+            }
+
+            .left .timeline-point,
+            .right .timeline-point {
+                left: 34px !important;
+                right: auto !important;
+            }
+        }
+
+
+        /* HERO - Updated to use the new suggested background image */
+        .hero {
+            height: 80vh;
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            /* --- NEW BACKGROUND IMAGE URL --- */
+            background-image: url('../static/images/bg.jpg');
+
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        /* The existing ::after pseudo-element creates the dark gradient overlay for text contrast */
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.8));
+        }
+
+        /* --- TYRE ANIMATION STYLES --- */
+        /* --- TYRE ANIMATION STYLES (Single Pass) --- */
+        .tyre-container {
+            position: absolute;
+            bottom: -50px;
+            /* Start position: hidden slightly below the header */
+            right: 0;
+            width: 100%;
+            height: 100px;
+            overflow: hidden;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .animated-tyre {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            bottom: 0;
+            right: 0;
+            /* Start the tyre off-screen to the right */
+            transform: translateX(100vw);
+
+            /* MODIFIED ANIMATION LINE: */
+            /* 1. Moves the tyre in 4 seconds */
+            /* 2. Rotates the tyre continuously (slower, 0.5s) */
+            /* 3. Stops the animation at the end (forwards) and doesn't loop (no infinite) */
+            animation: tyreMove 4s linear forwards, tyreRotate 0.5s linear infinite;
+        }
+
+        /* Keyframe for moving the tyre from right (off-screen) to left (off-screen) */
+        /* --- TYRE ANIMATION STYLES (Combined Single Pass) --- */
+
+        .animated-tyre {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            bottom: 0;
+            right: 0;
+            /* Start the tyre off-screen to the right */
+            transform: translateX(100vw);
+
+            /* MODIFIED ANIMATION: We only need ONE animation (tyreMove) */
+            /* Adjust rotation duration for a realistic roll (e.g., 0.3s) */
+            animation: tyreMove 4s linear forwards;
+        }
+
+        /* Keyframe for moving and rotating the tyre simultaneously */
+        @keyframes tyreMove {
+
+            /* Starts off the right edge (100vw) at 0 degrees rotation */
+            0% {
+                transform: translateX(100vw) rotate(0deg);
+            }
+
+            /* Ends off the left edge (-100vw). We need more rotation for a realistic 4s pass. */
+            100% {
+                transform: translateX(-100vw) rotate(3600deg);
+                /* Increased rotation dramatically */
+            }
+        }
+
+        /* * DELETE THE FOLLOWING KEYFRAME. It is no longer needed 
+* and was causing the conflict:
+* @keyframes tyreRotate { ... } 
+*/
+    </style>
+</head>
+
+<body>
+
+    <header class="hero">
+        <div class="hero-inner text-center">
+            <div class="brand-title">FormulaFever</div>
+            <p class="hero-sub">“FormulaFever” — where the word **Formula** signifies engineering precision and
+                **Fever** captures the passion and excitement of racing.
+                We design data-driven experiences that reveal the stories behind every lap.</p>
+
+            <div class="cta-row">
+                <a href="#what" class="btn btn-primary-ff"><i class="fas fa-arrow-down me-2"></i>Learn What & Why</a>
+                <a href="#features" class="btn btn-outline-ff"><i class="fas fa-sitemap me-2"></i>See Features</a>
+                <a href="{{ url_for('live_stats') }}" class="btn btn-outline-ff"><i class="fas fa-chart-line me-2"></i>Live Demo</a>
+                
+            </div>
+        </div>
+
+        <div class="tyre-container">
+            <img src="../static/images/tyre.png" class="animated-tyre" alt="Animated Racing Tyre">
+        </div>
+    </header>
+
+    <section id="what" class="section">
+        <div class="container">
+            <h2 class="title text-center">🏁 What does “FormulaFever” mean?</h2>
+            <p class="lead-muted text-center">
+                “FormulaFever” is a crafted name with two ideas in a single phrase:
+                **“Formula”** stands for the exact science of racing — engineering choices, aerodynamics, tyre chemistry
+                and lap mathematics.
+                **“Fever”** captures the emotional intensity of fans — the passion, excitement and the unpredictable
+                drama of racing.
+                Together it represents ***engineering precision + fan intensity*** — our core vision.
+            </p>
+
+            <div class="row g-4 align-items-center mt-5">
+                <div class="col-lg-6">
+                    <div class="ff-card">
+                        <div class="icon-circle"><i class="fas fa-lightbulb"></i></div>
+                        <h4>Why this name matters for our product</h4>
+                        <p class="mt-2" style="color:var(--muted)">Everything we build — predictive models, visual
+                            analytics, and live dashboards — tries to answer: ***what drives performance?*** The name
+                            signals that we combine mathematical reasoning with the thrill of racing. Our goal is to
+                            transform raw **telemetry** into actionable **insights**.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div id="vibeCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner rounded-4 overflow-hidden">
+                            <div class="carousel-item active">
+                                <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80"
+                                    class="d-block w-100" alt="race" style="height: 300px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <small>Engineering meets adrenaline</small>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&w=1600&q=80"
+                                    class="d-block w-100" alt="pit" style="height: 300px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <small>Pit strategy & team decisions</small>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="../static/images/dashboard.jpeg" class="d-block w-100" alt="dashboard"
+                                    style="height: 300px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <small>Telemetry & data visualization</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="why" class="section section-dark" style="padding-top:40px;padding-bottom:40px;">
+        <div class="container">
+            <h2 class="title text-center">🧠 Why FormulaFever? Our Edge</h2>
+            <p class="lead-muted text-center">We exist because **data without interpretation is noise**. FormulaFever
+                interprets — and predicts — giving fans, students, and analysts the tools to understand why races unfold
+                the way they do.</p>
+
+            <div class="row g-4 mt-4">
+            </div>
+
+            <div class="mt-5 ff-card p-4">
+                <h5 class="mb-4 text-white">Comparison — FormulaFever vs Official F1 App</h5>
+                <div class="table-responsive">
+                    <table class="table cmp-table">
+                        <thead>
+                            <tr>
+                                <th>Capability</th>
+                                <th>Official F1 App</th>
+                                <th>FormulaFever (ours)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Live Timing</td>
+                                <td><span class="text-success">✅</span> (official feed)</td>
+                                <td><span class="text-success">✅</span> + **integrated into predictive view**</td>
+                            </tr>
+                            <tr>
+                                <td>Driver Telemetry</td>
+                                <td><span class="text-success">✅</span> (premium / limited)</td>
+                                <td><span class="text-success">✅</span> (FastF1 open telemetry + **processed
+                                    analytics**)</td>
+                            </tr>
+                            <tr>
+                                <td>Predictive Analytics</td>
+                                <td><span class="text-danger">❌</span> (limited insights)</td>
+                                <td><span class="text-success">✅</span> (**ML models**: winner prob., lap time forecast,
+                                    tyre impact)</td>
+                            </tr>
+                            <tr>
+                                <td>Driver Comparison</td>
+                                <td><span class="text-danger">❌</span> (basic)</td>
+                                <td><span class="text-success">✅</span> (**detailed head-to-head** + improvement charts)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Interactive Chatbot</td>
+                                <td><span class="text-danger">❌</span></td>
+                                <td><span class="text-success">✅</span> (explainable predictions & Q&A)</td>
+                            </tr>
+                            <tr>
+                                <td>Community & Education</td>
+                                <td><span class="text-danger">❌</span></td>
+                                <td><span class="text-success">✅</span> (roadmap: forum, leaderboards, tutorials)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="color:var(--muted)" class="mt-4">***Short summary:*** Official apps excel at delivering
+                    official broadcast data. FormulaFever focuses on **interpretation, prediction, and learning** — the
+                    analyst’s and learner’s F1 platform.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="title text-center">⚙️ Features — What FormulaFever Does</h2>
+            <p class="lead-muted text-center">A practical tour for the presenter: these are the modules you built and
+                can demo.</p>
+
+            <div id="featuresCarousel" class="carousel slide mt-5" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-6">
+                                <div class="ff-card">
+                                    <h4><i class="fas fa-history me-2"></i>Past Race Analysis</h4>
+                                    <p style="color:var(--muted)">We ingest historical **FastF1** data: lap times,
+                                        sectors, tyres, pit stops and weather. Our data pipeline cleans, aligns and
+                                        stores runs for model training and interactive graphs.</p>
+                                    <ul style="color:var(--muted)">
+                                        <li>Data cleaning & normalization pipeline</li>
+                                        <li>Visual charts: lap-time trends, tyre-effect curves</li>
+                                        <li>Season-level **performance summaries**</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="graph-wrap">
+                                    <canvas id="pastChart" height="220"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-6 order-lg-2">
+                                <div class="ff-card">
+                                    <h4><i class="fas fa-users-line me-2"></i>Driver Comparison & Improvement</h4>
+                                    <p style="color:var(--muted)">Compare two drivers for any season or track: lap
+                                        **consistency**, overtakes, pit timing, and improvement curve — presented as
+                                        charts and a single-page comparison report.</p>
+                                    <ul style="color:var(--muted)">
+                                        <li>**Head-to-head metrics** (W/L ratio)</li>
+                                        <li>Improvement charts across races</li>
+                                        <li>Performance delta **heatmaps**</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 order-lg-1">
+                                <div class="graph-wrap">
+                                    <canvas id="compareChart" height="220"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-6">
+                                <div class="ff-card">
+                                    <h4><i class="fas fa-brain me-2"></i>Future Predictions</h4>
+                                    <p style="color:var(--muted)">Trained **ML models** predict finishing order
+                                        probabilities, lap time windows, and pit-stop strategies. Inputs include driver,
+                                        starting position, tyre, weather, and track characteristics.</p>
+                                    <ol style="color:var(--muted)">
+                                        <li>Feature extraction from historical runs</li>
+                                        <li>Model types: Random Forest, **Gradient Boost**</li>
+                                        <li>Outputs: **win probabilities**, lap-time predictions</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1200&q=80"
+                                    class="img-fluid rounded-4 shadow-sm" alt="prediction"
+                                    style="height: 300px; object-fit: cover;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-6 order-lg-2">
+                                <div class="ff-card">
+                                    <h4><i class="fas fa-comment-dots me-2"></i>Interactive Chatbot</h4>
+                                    <p style="color:var(--muted)">A guided assistant that answers questions like ***“Who
+                                        is likely to win on a wet short track?”*** or ***“Compare Driver A vs Driver B
+                                        at Silverstone.”***</p>
+                                    <ul style="color:var(--muted)">
+                                        <li>NLP-based question parsing</li>
+                                        <li>Model-backed **explainable predictions** (XAI)</li>
+                                        <li>Integration with user queries and live data</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 order-lg-1">
+                                <img src="../static/images/chatbot.jpeg" class="img-fluid rounded-4 shadow-sm"
+                                    alt="chatbot" style="height: 300px; object-fit: cover;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-6">
+                                <div class="ff-card">
+                                    <h4><i class="fas fa-tachometer-alt me-2"></i>Live Race Stats</h4>
+                                    <p style="color:var(--muted)">We fetch live session data via FastF1 (or fallback to
+                                        cached snapshots) and surface position, lap, tyre, and pit data instantly. If
+                                        data is temporarily unavailable we show **graceful messages** and cached
+                                        best-known values.</p>
+                                    <ul style="color:var(--muted)">
+                                        <li>Live feed + data caching mechanism</li>
+                                        <li>**Error handling** & graceful degradation</li>
+                                        <li>“Predicted vs Actual” overlays during races</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <img src="https://images.unsplash.com/photo-1531379410503-8b38b4d7a1da?auto=format&fit=crop&w=1200&q=80"
+                                    class="img-fluid rounded-4 shadow-sm" alt="live"
+                                    style="height: 300px; object-fit: cover;">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#featuresCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#featuresCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="roadmap" class="section" style="background-color:#0d0d0d; color:#fff;">
+        <div class="container">
+            <h2 class="title text-center text-danger fw-bold mb-4">⏱️ Roadmap — Development Path</h2>
+            <p class="lead text-center text-light mb-5">
+                The journey of FormulaFever — from raw data to intelligent insights.
+                Each phase refined our vision to combine racing passion with data-driven technology.
+            </p>
+
+            <div class="timeline position-relative">
+                <div class="timeline-line"></div>
+
+                <!-- Phase 1 -->
+                <div class="timeline-item left">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">🏁 Phase 1 — Past Analysis</h4>
+                        <p class="text-light">
+                            We started with analyzing <b>historical F1 race data</b> — focusing on parameters like lap
+                            times,
+                            track conditions, driver performance, and tire usage.
+                            The analyzed data is visualized through <b>interactive graphs</b> displayed directly on our
+                            website.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="timeline-item right">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">⚙️ Phase 2 — Future Predictions</h4>
+                        <p class="text-light">
+                            Leveraging machine learning and the <b>Gemini API</b>, FormulaFever predicts future race
+                            outcomes —
+                            including driver performance, winning probability, and lap timings — using real-world race
+                            data.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="timeline-item left">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">🏎️ Phase 3 — Driver Comparison & Improvement</h4>
+                        <p class="text-light">
+                            We added a <b>comparative dashboard</b> that allows users to evaluate two drivers
+                            side-by-side,
+                            tracking their progress and improvement trends across multiple seasons.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="timeline-item right">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">🤖 Phase 4 — AI Chatbot Integration</h4>
+                        <p class="text-light">
+                            To make FormulaFever interactive, we built a <b>smart AI chatbot</b> that responds to
+                            queries about
+                            race predictions, stats, and analysis — offering insights instantly through natural
+                            conversation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phase 5 -->
+                <div class="timeline-item left">
+                    <div class="card p-4 bg-transparent border border-danger rounded-4 shadow-lg">
+                        <h4 class="text-danger fw-bold">📈 Phase 5 — Live Race Stats</h4>
+                        <p class="text-light">
+                            We're adding a <b>real-time race tracking system</b> using FastF1, bringing dynamic race
+                            data updates
+                            — including positions, speed, and tire strategy — right onto the FormulaFever dashboard.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .timeline {
+                position: relative;
+                margin-top: 60px;
+                padding: 20px 0;
+            }
+
+            .timeline-line {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 4px;
+                height: 100%;
+                background-color: #ff1e1e;
+                border-radius: 2px;
+            }
+
+            .timeline-item {
+                position: relative;
+                width: 50%;
+                padding: 20px 40px;
+            }
+
+            .timeline-item.left {
+                left: 0;
+            }
+
+            .timeline-item.right {
+                left: 50%;
+            }
+
+            .timeline-item::after {
+                content: '';
+                position: absolute;
+                top: 25px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #ff1e1e;
+                box-shadow: 0 0 15px #ff1e1e;
+            }
+
+            .timeline-item.left::after {
+                right: -10px;
+            }
+
+            .timeline-item.right::after {
+                left: -10px;
+            }
+
+            @media (max-width: 768px) {
+                .timeline::before {
+                    left: 8px;
+                }
+
+                .timeline-item {
+                    width: 100%;
+                    padding-left: 40px;
+                    margin-bottom: 40px;
+                }
+
+                .timeline-item.right {
+                    left: 0;
+                }
+
+                .timeline-item::after {
+                    left: 0;
+                }
+            }
+        </style>
+    </section>
+
+
+    <section id="why-different" class="section section-dark">
+        <div class="container">
+            <h2 class="title text-center">💡 Why We Are Different — A Presenter's Script</h2>
+            <div class="ff-card p-4">
+                <h5 class="text-white">Talk track for your demo (readable & persuasive)</h5>
+                <p style="color:var(--muted)">
+                    “FormulaFever started as a curiosity — can we model the reasons behind overtakes, pit-stop timing,
+                    and sudden performance drops?
+                    We built a pipeline: **collect → clean → model → visualize**. Unlike apps that only show what is
+                    happening, we ask: ***why*** it's happening and ***what's likely next***.
+                    During a demo, show the **Past Analysis** chart first (explain data sources), then run a live
+                    prediction and explain feature importance. End with **driver comparison** to show improvement
+                    tracking and the **chatbot** to answer ad-hoc queries.”
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="future" class="section">
+        <div class="container">
+            <h2 class="title text-center">🚀 Future Scope — Where FormulaFever Goes Next</h2>
+            <p class="lead-muted text-center">We are building not just a product — but an ecosystem: **analytics +
+                community + education.**</p>
+
+        </div>
+    </section>
+
+    <footer class="py-4 text-center">
+        <div class="container">
+            <small style="color:var(--muted)">©️ 2025 FormulaFever — built by students, engineered for insights.
+                Demo-ready. For presentation assistance, ask the FormulaFever chatbot.</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Past Chart (sample data) - replace with your FastF1 values
+        const ctxPast = document.getElementById('pastChart').getContext('2d');
+        new Chart(ctxPast, {
+            type: 'line',
+            data: {
+                labels: ['Race 1', 'Race 2', 'Race 3', 'Race 4', 'Race 5', 'Race 6'],
+                datasets: [
+                    // Driver A: Red
+                    { label: 'Driver A avg lap (s)', data: [89.1, 88.5, 88.9, 87.6, 87.9, 87.3], borderColor: 'rgba(255,42,42,1)', backgroundColor: 'rgba(255,42,42,0.1)', tension: 0.4, pointRadius: 5, pointHoverRadius: 7, fill: true },
+                    // Driver B: New Secondary Blue Accent
+                    { label: 'Driver B avg lap (s)', data: [90.3, 89.7, 90.1, 89.0, 88.6, 88.9], borderColor: 'rgba(0,184,255,1)', backgroundColor: 'rgba(0,184,255,0.1)', tension: 0.4, pointRadius: 5, pointHoverRadius: 7, fill: true }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: '#fff', font: { size: 14 } }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#ddd', font: { size: 12 } },
+                        grid: { color: 'rgba(255,255,255,0.08)' }
+                    },
+                    y: {
+                        ticks: { color: '#ddd', font: { size: 12 } },
+                        grid: { color: 'rgba(255,255,255,0.08)' }
+                    }
+                }
+            }
+        });
+
+        // Compare Chart (sample)
+        const ctxCmp = document.getElementById('compareChart').getContext('2d');
+        new Chart(ctxCmp, {
+            type: 'bar',
+            data: {
+                labels: ['Speed', 'Consistency', 'Overtaking', 'Pit Efficiency', 'Tyre Management'],
+                datasets: [
+                    // Driver A: Red
+                    { label: 'Driver A', data: [88, 92, 81, 85, 79], backgroundColor: 'rgba(255,42,42,0.8)' },
+                    // Driver B: New Secondary Blue Accent
+                    { label: 'Driver B', data: [85, 89, 84, 88, 82], backgroundColor: 'rgba(0,184,255,0.8)' }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: '#fff', font: { size: 14 } }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#ddd', font: { size: 12 } },
+                        grid: { display: false }
+                    },
+                    y: {
+                        ticks: { color: '#ddd', font: { size: 12 } },
+                        grid: { color: 'rgba(255,255,255,0.08)' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

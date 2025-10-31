@@ -4,3 +4,4 @@ __pycache__/
 ff1_cache/
 FormulaFever-2/models/*.pkl
 FormulaFever-2/static/media/*.mov
+instance/

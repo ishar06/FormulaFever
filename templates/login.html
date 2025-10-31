@@ -1,0 +1,122 @@
+{% extends 'layout.html' %}
+
+{% block title %}Login - FormulaFever{% endblock %}
+
+{% block content %}
+<style>
+  .login-container {
+    max-width: 700px; /* Increased from 600px */
+    width: 100%;
+    margin-top: 3rem;
+    padding: 2rem;
+  }
+  .login-form-wrapper {
+    position: relative;
+    padding: 3rem 1rem;
+    border-radius: 15px;
+  }
+  /* This pseudo-element creates the red glow from your screenshot */
+  .login-form-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(225, 6, 0, 0.25), transparent 70%);
+    filter: blur(60px);
+    z-index: -1;
+  }
+  .login-container h3 {
+    font-weight: 700;
+    font-size: 2.5rem;
+  }
+  .login-container .subtitle {
+    color: #adb5bd; /* Bootstrap's 'secondary' text color */
+    font-size: 1.1rem;
+  }
+  .login-container .form-label {
+    text-align: left;
+    display: block;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    color: #ced4da; /* Lighter text for label */
+  }
+  /* Dark-themed form inputs */
+  .login-container .form-control {
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 0.75rem 1rem;
+  }
+  .login-container .form-control:focus {
+    background-color: #222;
+    border-color: #E10600;
+    box-shadow: 0 0 0 0.25rem rgba(225, 6, 0, 0.25);
+    color: #fff;
+  }
+  .login-container .form-control::placeholder {
+    color: #6c757d;
+  }
+  .login-container .btn-danger {
+    background-color: #E10600;
+    border-color: #E10600;
+    padding: 0.75rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background-color 0.2s ease-in-out;
+  }
+  .login-container .btn-danger:hover {
+    background-color: #b30500; /* Darker red on hover */
+    border-color: #b30500;
+  }
+  /* "New here?" link styling */
+  .login-container .register-link {
+    color: #f8f9fa; /* White text */
+    margin-top: 1.5rem;
+  }
+  .login-container .register-link a {
+    color: #ffc107; /* Bootstrap's 'warning' yellow/gold */
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .login-container .register-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="d-flex justify-content-center">
+  <div class="login-container text-center">
+
+    <div class="login-form-wrapper">
+      <h3 class="mb-2">Welcome Back 🏁</h3>
+      <p class="subtitle mb-4">Please log in to access this page.</p>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mt-3" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('login') }}" class="mt-4">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-4">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-danger w-100">Login</button>
+      </form>
+    </div>
+
+    <p class="register-link">New here? <a href="{{ url_for('register') }}">Create an account</a></p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,360 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home - FormulaFever{% endblock %}
+
+{% block content %}
+
+<style>
+  /* --- Hero Video Background --- */
+  .hero-section {
+    position: relative; /* Container for the video */
+    overflow: hidden; /* Clips the video */
+    display: flex; /* Use flex to center content */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+    /* --- CHANGE 1: Increased min-height to show more video --- */
+    min-height: 60vh; 
+    
+    padding: 5rem 1rem; /* Add padding for the text */
+  }
+  .hero-section-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1; /* Behind the content */
+    /* Add a dark overlay for text readability */
+    filter: brightness(0.6); 
+  }
+  .hero-section-content {
+    position: relative; /* Ensures it's above the z-index -1 video */
+    z-index: 1;
+    color: var(--bs-light); /* Make text light */
+  }
+  /* Ensure gradient text is still visible */
+  .hero-section-content .hero-gradient-text {
+    /* (This style is likely in your layout.html, but just in case) */
+    background: -webkit-linear-gradient(45deg, #ff8181, #E10600);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* --- Fact Cube Section --- */
+  #f1-facts {
+    /* --- CHANGE 2: Added margin-top as requested --- */
+    margin-top: 3rem; 
+    padding-bottom: 3rem; /* Add some space before the image scroller */
+  }
+
+  .fact-cubes-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 40px;
+    padding: 20px 0;
+    /* This is the 3D space for the cubes */
+    perspective: 1200px; 
+  }
+
+  .fact-cube {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+    /* Animation: name, duration, timing, delay, iteration, direction */
+    animation: rotateCube 30s linear 0s infinite normal;
+  }
+  
+  /* Stagger the animation start times for visual interest */
+  .fact-cube:nth-child(2) { animation-delay: -7.5s; }
+  .fact-cube:nth-child(3) { animation-delay: -15s; }
+  .fact-cube:nth-child(4) { animation-delay: -22.5s; }
+
+  .fact-cube:hover {
+    animation-play-state: paused;
+  }
+
+  .cube-face {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--bs-light);
+    background: rgba(40, 40, 40, 0.85); /* Dark, semi-transparent bg */
+    border: 2px solid #E10600; 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    backface-visibility: hidden; 
+  }
+
+  .face-front  { transform: translateZ(100px); }
+  .face-back   { transform: rotateY(180deg) translateZ(100px); }
+  .face-right  { transform: rotateY(90deg)  translateZ(100px); }
+  .face-left   { transform: rotateY(-90deg) translateZ(100px); }
+  .face-top    { transform: rotateX(90deg)  translateZ(100px); }
+  .face-bottom { transform: rotateX(-90deg) translateZ(100px); }
+  
+  @keyframes rotateCube {
+    0% { transform: rotateY(0deg); } /* Front */
+    16.67% { transform: rotateY(-90deg); } /* Left */
+    33.33% { transform: rotateY(-180deg); } /* Back */
+    50% { transform: rotateY(-270deg); } /* Right */
+    66.67% { transform: rotateX(-90deg); } /* Bottom */
+    83.33% { transform: rotateX(90deg); } /* Top */
+    100% { transform: rotateX(0deg) rotateY(0deg); } /* Reset to Front */
+  }
+
+  /* --- Fading Carousel CSS --- */
+  .fading-carousel-container {
+    position: relative;
+    width: 100%;
+    height: 400px; 
+    overflow: hidden;
+    background-color: #1a1a1a; /* Dark background while images load */
+  }
+  
+  .fading-carousel-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Covers the area, may crop */
+    opacity: 0;
+    /* Total animation: 5 images * 4s each = 20s */
+    animation: crossfade 20s infinite ease-in-out;
+  }
+  
+  /* Stagger the animations. Each starts 4s after the previous */
+  .fading-carousel-container img:nth-child(2) { animation-delay: 4s; }
+  .fading-carousel-container img:nth-child(3) { animation-delay: 8s; }
+  .fading-carousel-container img:nth-child(4) { animation-delay: 12s; }
+  .fading-carousel-container img:nth-child(5) { animation-delay: 16s; }
+  
+  @keyframes crossfade {
+    0% { opacity: 0; }
+    5% { opacity: 1; }
+    20% { opacity: 1; }
+    25% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* This class "breaks" the element out of the centered container */
+  .full-width-section {
+    /* Set width to 100% of the viewport width */
+    width: 100vw; 
+    
+    /* Calculate the negative margin needed to pull it to the left edge */
+    /* 50% = center of container, 50vw = center of viewport */
+    margin-left: calc(50% - 50vw);
+    
+    /* Give it a bottom margin by default (matches mb-5) */
+    margin-bottom: 3rem; 
+  }
+
+</style>
+
+  <div class="hero-section full-width-section">
+    <video autoplay loop muted playsinline class="hero-section-video">
+      <source src="{{ url_for('static', filename='media/bg-video.mp4.mov') }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    
+    <div class="hero-section-content">
+      <h1>Welcome to <span class="hero-gradient-text">FormulaFever</span></h1>
+      <p>Next-gen analytics for the ultimate F1 fan.</p>
+    </div>
+  </div>
+  
+  <section id="f1-facts" class="mb-5">
+    <h2 class="mb-4 text-center">F1 Unbelievable Facts</h2>
+    <div class="fact-cubes-container">
+      
+      <div class="fact-cube">
+        <div class="cube-face face-front">An F1 car can pull 5-6 G's in corners, similar to a fighter jet.</div>
+        <div class="cube-face face-back">Drivers lose up to 4kg (9lbs) of water weight during a hot race.</div>
+        <div class="cube-face face-left">McLaren holds the pit stop record: 1.80 seconds at the 2023 Qatar GP.</div>
+        <div class="cube-face face-right">F1 car engines idle at ~5,000 RPM, which is the redline for many road cars.</div>
+        <div class="cube-face face-top">At 120 mph, an F1 car's downforce is so strong it could (theoretically) drive upside down.</div>
+        <div class="cube-face face-bottom">An F1 steering wheel can cost over $50,000 and has more than 25 buttons and switches.</div>
+      </div>
+      
+      <div class="fact-cube">
+        <div class="cube-face face-front">The 1996 Monaco GP had only 3 official finishers, the lowest in F1 history.</div>
+        <div class="cube-face face-back">Juan Manuel Fangio won 47% of the races he entered, the highest win rate ever.</div>
+        <div class="cube-face face-left">Max Verstappen became the youngest F1 driver at just 17 years and 166 days old.</div>
+        <div class="cube-face face-right">The 2011 Canadian GP was the longest F1 race, lasting 4 hours, 4 minutes, and 39 seconds.</div>
+        <div class="cube-face face-top">The shortest race? The 2021 Belgian GP, which was red-flagged after just one lap.</div>
+        <div class="cube-face face-bottom">An F1 car is made of ~80,000 components, assembled with near-perfect precision.</div>
+      </div>
+      
+      <div class="fact-cube">
+        <div class="cube-face face-front">F1 tires are designed to last only 60-120 km, unlike road tires which last 50,000+ km.</div>
+        <div class="cube-face face-back">Brake discs can reach 1,200°C (2,200°F), glowing bright red under braking.</div>
+        <div class="cube-face face-left">An F1 car can go from 0-100 mph (160 kph) and back to 0 in about 4 seconds.</div>
+        <div class="cube-face face-right">In 1997 at Jerez, 3 drivers (Schumacher, Villeneuve, Frentzen) set the exact same pole time: 1:21.072.</div>
+        <div class="cube-face face-top">Andrea de Cesaris holds the record for most race starts (208) without a single win.</div>
+        <div class="cube-face face-bottom">The 6-wheeled Tyrrell P34 is the only 6-wheeled car to ever win an F1 race (1976).</div>
+      </div>
+      
+      <div class="fact-cube">
+        <div class="cube-face face-front">Lella Lombardi is the only female driver to score points in F1 (0.5 points in 1975).</div>
+        <div class="cube-face face-back">The Brabham "Fan Car" was so dominant in 1978 it was raced once, won, and then voluntarily withdrawn.</div>
+        <div class="cube-face face-left">F1 engine reliability is insane. Teams are only allowed 3-4 engines for the *entire* 24-race season.</div>
+        <div class="cube-face face-right">Kimi Räikkönen holds the record for the longest gap between wins: 113 races (2013 Aus GP to 2018 US GP).</div>
+        <div class="cube-face face-top">Sebastian Vettel is the youngest World Champion, winning his first title at 23.</div>
+        <div class="cube-face face-bottom">"Ground Effect," the aero concept that "sucks" cars to the track, was banned in 1983 and brought back in 2022.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="standings" class="mb-5">
+    {% if error %}
+      <div class="alert alert-danger" role="alert">{{ error }}</div>
+    
+    {% elif standings %}
+      <h2 class="mb-3">{{ season }} Driver Standings</h2>
+      <p class="text-secondary mb-4">Live standings data courtesy of the Jolpica API.</p>
+
+      <div class="card">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">Pos</th>
+                  <th scope="col">Driver</th>
+                  <th scope-col">Team</th>
+                  <th scope="col">Points</th>
+                  <th scope="col">Wins</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for driver in standings %}
+                <tr>
+                  <td><strong>{{ driver.position }}</strong></td>
+                  <td>
+                    <a href="{{ url_for('driver_dashboard', year=season, driver_abbr=driver.Driver.code) }}">
+                      {{ driver.Driver.givenName }} {{ driver.Driver.familyName }}
+                    </a>
+                  </td>
+                  <td>{{ driver.Constructors[0].name }}</td>
+                  <td><strong>{{ driver.points }}</strong></td>
+                  <td>{{ driver.wins }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+      <p>Loading standings...</p>
+    {% endif %}
+  </section>
+
+  <section id="race-selector" class="mb-5">
+    <h2 class="mb-3">Select a Race to Analyze</h2>
+    
+    <form action="{{ url_for('race_search') }}" method="GET" class="race-search-form">
+      <div class="row g-3">
+        <div class="col-md-5">
+          <label for="year" class="form-label">Year</label>
+          <input type="number" class="form-control" id="year" name="year" value="2025" min="1996" max="2025" required>
+        </div>
+        <div class="col-md-5">
+          <label for="race_name" class="form-label">Race (Location, Country, or Name)</label>
+          <input type="text" class="form-control" id="race_name" name="race_name" placeholder="e.g., Monza, Italy, or Italian Grand Prix" required>
+          </div>
+        <div class="col-md-2 d-grid align-self-end">
+          <button type="submit" class="btn btn-primary">Analyze</button>
+        </div>
+      </div>
+    </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} mt-3" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </section>
+
+  <section id="explore-features" class="mb-5">
+    <h2 class="mb-3">Explore Features</h2>
+    <div class="row g-4">
+      
+      <div class="col-md-4">
+        <div class="card card-hover-glow h-100">
+          <div class="card-body">
+            <h5 class="card-title">Ghost Lap Comparator</h5>
+            <p class="card-text">Compare the telemetry (Speed, Throttle, Brake) of any two drivers' fastest laps, side-by-side.</p>
+            <!-- This link now points to your new 'comparator' route -->
+            <a href="{{ url_for('comparator') }}" class="btn btn-outline-primary" >Launch Comparator</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card card-hover-glow h-100">
+          <div class="card-body">
+            <h5 class="card-title">Predictive Models</h5>
+            <p class="card-text">See which drivers have a statistical edge. We analyze historical data at upcoming tracks to predict performance.</p>
+            <a href="{{ url_for('predictor') }}" class="btn btn-outline-primary" >Try it Out</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card card-hover-glow h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Driver Analytics</h5>
+            <p class="card-text">Analyze a driver's season performance (finishing positions and lap times).</p>
+            <p class="card-text">NOTE : This may take a few minutes to work.</p>
+            
+            <form action="{{ url_for('driver_search') }}" method="GET" class="mt-auto">
+              <div class="mb-2">
+                <label for="driver_year" class="form-label-sm">Year</label>
+                <input type="number" class="form-control" id="driver_year" name="year" value="2025" min="1996" max="2025" required>
+              </div>
+              <div class="mb-3">
+                <label for="driver_abbr" class="form-label-sm">Driver Abbreviation</label>
+                <input type="text" class="form-control" id="driver_abbr" name="driver_abbr" placeholder="e.g., VER, HAM, ALO" required maxlength="3" minlength="3">
+                <small class="text-secondary">(Find abbreviations in the standings above)</small>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Analyze Driver</button>
+            </form>
+            </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <section class="full-width-section mb-0">
+    <div class="fading-carousel-container">
+      <img src="https://cdn.wallpapersafari.com/99/25/67rhDX.jpg" alt="F1 car on track">
+      <img src="https://cdn.wallpapersafari.com/18/10/nDcFA6.jpg" alt="F1 cars at race start">
+      <img src="https://cdn.wallpapersafari.com/64/76/PZXJV1.jpg" alt="F1 car in testing">
+      <img src="https://cdn.wallpapersafari.com/43/43/7reMxq.jpg" alt="Max Verstappen in F1 car">
+      <img src="https://cdn.wallpapersafari.com/89/32/YHiEAz.jpg" alt="Ferrari F1 car on track">
+    </div>
+  </section>
+
+{% endblock %}
