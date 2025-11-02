@@ -103,10 +103,10 @@ flask shell
 
 Meet the champions who brought this project to life through countless hours of coding, debugging, and optimization:
 
-- **[Ishar Singh](https://github.com/ishar06)** - Project Lead & Backend Development
-- **[Bhumika Nagpal](https://github.com/BhumikaNagpal)** - Frontend Development & UI/UX
-- **[Damanjeet Singh](https://github.com/daman-max)** - Data Analysis & ML Models
-- **[Karandeep Kaur](https://github.com/karandeepkaur18)** - Database Architecture & API Integration
+- **[Ishardeep Singh](https://github.com/ishar06)** - Project Lead & Backend Development
+- **[Bhumika Nagpal](https://github.com/BhumikaNagpal)** - Data Analysis & ML Models
+- **[Damanjeet Singh](https://github.com/daman-max)** - API and Integration Head
+- **[Karandeep Kaur](https://github.com/karandeepkaur18)** - Database Architecture & Model Refiner
 
 ## 🔧 Contributing
 
