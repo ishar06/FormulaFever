@@ -1,6 +1,6 @@
 # 🏎️ FormulaFever | Race Into Data
 
-![Formula 1 Banner](https://raw.githubusercontent.com/ishar06/FormulaFever/main/static/images/f1_banner.png)
+![Formula 1 Banner](https://raw.githubusercontent.com/ishar06/FormulaFever/main/static/images/f1-banner.png)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-2.0%2B-lightgrey?logo=flask)](https://flask.palletsprojects.com/)
