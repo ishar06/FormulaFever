@@ -9,7 +9,6 @@
 
 
 # 🏎️ FormulaFever 
-##   Experience F1 like never before
 
 > "Life is measured in achievement, not in years alone." - Bruce McLaren
 
