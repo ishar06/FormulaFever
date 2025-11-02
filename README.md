@@ -1,4 +1,4 @@
-# 🏎️ FormulaFever | Race Into Data
+
 
 ![Formula 1 Banner](https://raw.githubusercontent.com/ishar06/FormulaFever/main/static/images/f1-banner.png)
 
@@ -6,6 +6,10 @@
 [![Flask](https://img.shields.io/badge/Flask-2.0%2B-lightgrey?logo=flask)](https://flask.palletsprojects.com/)
 [![FastF1](https://img.shields.io/badge/FastF1-Latest-red)](https://docs.fastf1.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+
+# 🏎️ FormulaFever 
+##   Experience F1 like never before
 
 > "Life is measured in achievement, not in years alone." - Bruce McLaren
 
