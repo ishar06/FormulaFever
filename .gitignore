@@ -1,7 +1,44 @@
+# Python
 env/
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Project specific
 ff1_cache/
-FormulaFever-2/models/*.pkl
-FormulaFever-2/static/media/*.mov
 instance/
+*.pkl
+*.mov
+*.mp4
+*.db
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/

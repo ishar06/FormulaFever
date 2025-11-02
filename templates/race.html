@@ -35,7 +35,7 @@
               </div>
               <p class="mb-1 h4">{{ summary.fastest_avg_time }}</p>
               <small>By 
-                <a href="{{ url_for('driver_dashboard', year=year, driver_abbr=summary.fastest_avg_driver) }}">
+                <a href="{{ url_for('driver_analysis_result', year=year, driver_abbr=summary.fastest_avg_driver) }}">
                   {{ summary.fastest_avg_driver }}
                 </a>
               </small>
@@ -45,9 +45,9 @@
               <div class="d-flex w-100 justify-content-between">
                 <h6 class="mb-1">Most Consistent Driver</h6>
               </div>
-              <p class="mb-1 h4">{{ summary.most_consistent_std }}</post>
+              <p class="mb-1 h4">{{ summary.most_consistent_std }}</p>
               <small>
-                <a href="{{ url_for('driver_dashboard', year=year, driver_abbr=summary.most_consistent_driver) }}">
+                <a href="{{ url_for('driver_analysis_result', year=year, driver_abbr=summary.most_consistent_driver) }}">
                   {{ summary.most_consistent_driver }}
                 </a> (lap time variance)
               </small>
@@ -57,9 +57,9 @@
               <div class="d-flex w-100 justify-content-between">
                 <h6 class="mb-1">Fastest Single Lap</h6>
               </div>
-              <p class="mb-1 h4">{{ summary.fastest_lap_time }}</post>
+              <p class="mb-1 h4">{{ summary.fastest_lap_time }}</p>
               <small>By 
-                <a href="{{ url_for('driver_dashboard', year=year, driver_abbr=summary.fastest_lap_driver) }}">
+                <a href="{{ url_for('driver_analysis_result', year=year, driver_abbr=summary.fastest_lap_driver) }}">
                   {{ summary.fastest_lap_driver }}
                 </a> on Lap {{ summary.fastest_lap_number }}
               </small>
