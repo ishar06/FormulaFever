@@ -11,6 +11,8 @@ from flask_bcrypt import Bcrypt
 # --- REMOVED CHART IMPORT ---
 from analysis import create_laptime_chart, create_comparison_plots
 from flask_caching import Cache
+from dotenv import load_dotenv
+load_dotenv()
 
 # -----------------------------------------------------
 # App setup
